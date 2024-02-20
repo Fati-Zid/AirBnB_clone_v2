@@ -13,7 +13,6 @@ from models.amenity import Amenity
 from models.review import Review
 
 
-
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
@@ -118,7 +117,8 @@ class HBNBCommand(cmd.Cmd):
     # Fati-Zid: task 2
     def do_create(self, arg):
         """
-        Creates a new instance of a given class, saves it to the JSON file, and prints its ID.
+        Creates a new instance of a given class, saves it to \
+              the JSON file, and prints its ID.
         """
         if not arg:
             print("** class name missing **")
@@ -164,7 +164,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the create method """
         print("Creates a new object with given parameters.")
         print("Usage: create <class_name> <param1>=<value1> \
-               <param2>=<value2> ...\n")    
+            <param2>=<value2> ...\n")
 
     def do_show(self, args):
         """ Method to show an individual object """
