@@ -117,7 +117,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the create method """
         print("Creates a class of any type")
         print("[Usage]: create <className>\n")
-    
+
     def do_create(self, args):
         """ Creates an object with given parameters """
         args = args.split()
@@ -147,8 +147,8 @@ class HBNBCommand(cmd.Cmd):
     def help_create(self):
         """ Help information for the create method """
         print("Creates a new object with given parameters.")
-        print("Usage: create <class_name> <param1>=<value1> <param2>=<value2> ...\n")
-
+        print("Usage: create <class_name> <param1>=<value1> \
+               <param2>=<value2> ...\n")
 
     def do_show(self, args):
         """ Method to show an individual object """
