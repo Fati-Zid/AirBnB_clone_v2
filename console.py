@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import re
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -10,6 +11,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+
 
 
 class HBNBCommand(cmd.Cmd):
@@ -114,26 +116,43 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     # Fati-Zid: task 2
-    def do_create(self, args):
-        """ Create an object of any class"""
-        try:
-            if not args:
-                raise SyntaxError()
-            arg_list = args.split(" ")
-            key_word = {}
-            for arg in arg_list[1:]:
-                arg_splited = arg.split("=")
-                arg_splited[1] = eval(arg_splited[1])
-                if type(arg_splited[1]) is str:
-                    arg_splited[1] = arg_splited[1].replace("_", " ").replace('"', '\\"')
-                key_word[arg_splited[0]] = arg_splited[1]
-        except SyntaxError:
+    def do_create(self, arg):
+        """
+        Creates a new instance of a given class, saves it to the JSON file, and prints its ID.
+        """
+        if not arg:
             print("** class name missing **")
-        except NameError:
+            return
+
+        args = arg.split()
+        class_name = args[0]
+
+        if class_name not in self.classes:
             print("** class doesn't exist **")
-        new_object = HBNBCommand.classes[arg_list[0]](**key_word)
-        new_object.save()
-        print(new_object.id)
+            return
+
+        params = {}
+        for item in args[1:]:
+            match = re.match(r'([^=]+)="((?:[^\\"]|\\.)*)"', item)
+            if not match:
+                continue
+            key, value = match.groups()
+            value = value.replace('_', ' ')
+            if '.' in value:
+                try:
+                    value = float(value)
+                except ValueError:
+                    continue
+            else:
+                try:
+                    value = int(value)
+                except ValueError:
+                    continue
+            params[key] = value
+
+        instance = eval(class_name)(**params)
+        instance.save()
+        print(instance.id)
     # Fati-Zid: end of task 2
 
     def help_create(self):
@@ -141,35 +160,11 @@ class HBNBCommand(cmd.Cmd):
         print("Creates a class of any type")
         print("[Usage]: create <className>\n")
 
-    def do_create(self, args):
-        """ Create an object of any class"""
-        try:
-            if not args:
-                raise SyntaxError()
-            split1 = args.split(' ')
-            new_instance = eval('{}()'.format(split1[0]))
-            params = split1[1:]
-            for param in params:
-                k, v = param.split('=')
-                try:
-                    attribute = HBNBCommand.verify_attribute(v)
-                except ValueError:
-                    continue
-                if not attribute:
-                    continue
-                setattr(new_instance, k, attribute)
-            new_instance.save()
-            print(new_instance.id)
-        except SyntaxError:
-            print("** class name missing **")
-        except NameError as e:
-            print("** class doesn't exist **")
-
     def help_create(self):
         """ Help information for the create method """
         print("Creates a new object with given parameters.")
         print("Usage: create <class_name> <param1>=<value1> \
-               <param2>=<value2> ...\n")
+               <param2>=<value2> ...\n")    
 
     def do_show(self, args):
         """ Method to show an individual object """
