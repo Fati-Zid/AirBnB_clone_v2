@@ -113,47 +113,42 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    # Fati-Zid: task 2
-    def do_create(self, arg):
-        """Create an object of any class with given parameters."""
-    if not arg:
-        print("** class name missing **")
-        return
-
-    args = arg.split()
-    class_name = args[0]
-    if class_name not in self.classes:
-        print("** class doesn't exist **")
-        return
-
-    params = {}
-    for param in args[1:]:
-        try:
-            key, value = param.split('=')
-            # Handle string value
-            if value.startswith('"') and value.endswith('"'):
-                value = value[1:-1].replace('\\"', '"').replace('_', ' ')
-            # Handle float value
-            elif '.' in value:
-                value = float(value)
-            # Handle integer value
-            else:
-                value = int(value)
-            params[key] = value
-        except ValueError:
-            # Skip if parameter can't be recognized correctly
-            pass
-
-    new_instance = self.classes[class_name](**params)
-    storage.new(new_instance)
-    storage.save()
-    print(new_instance.id)
-    # Fati-Zid: end of task 2
-
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
         print("[Usage]: create <className>\n")
+    
+    def do_create(self, args):
+        """ Creates an object with given parameters """
+        args = args.split()
+        if len(args) == 0:
+            print("** class name missing **")
+            return
+
+        class_name = args[0]
+        if class_name not in self.classes:
+            print("** class doesn't exist **")
+            return
+
+        attributes = {}
+        for arg in args[1:]:
+            if "=" in arg:
+                key, value = arg.split("=", 1)
+                # Remove quotes and replace underscores with spaces
+                value = value.strip('"').replace('_', ' ')
+                attributes[key] = value
+            else:
+                print(f"Invalid parameter: {arg}")
+
+        new_object = self.classes[class_name](**attributes)
+        new_object.save()
+        print(new_object.id)
+
+    def help_create(self):
+        """ Help information for the create method """
+        print("Creates a new object with given parameters.")
+        print("Usage: create <class_name> <param1>=<value1> <param2>=<value2> ...\n")
+
 
     def do_show(self, args):
         """ Method to show an individual object """
