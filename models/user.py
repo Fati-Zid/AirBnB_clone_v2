@@ -12,7 +12,7 @@ class User(BaseModel, Base):
     """This is the class for user
     Attributes:
         email: email address
-        password: password for you login
+        password: password for your login
         first_name: first name
         last_name: last name
     """
@@ -21,11 +21,8 @@ class User(BaseModel, Base):
     password = Column(String(128), nullable=False)
     first_name = Column(String(128))
     last_name = Column(String(128))
+
     places = relationship("Place", cascade='all, delete, delete-orphan',
                           backref="user")
     reviews = relationship("Review", cascade='all, delete, delete-orphan',
                            backref="user")
-    
-    def __init__(self, *args, **kwargs):
-        """Initializes a user"""
-        super().__init__(*args, **kwargs)
