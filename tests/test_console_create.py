@@ -4,6 +4,7 @@ from io import StringIO
 import sys
 from console import HBNBCommand
 
+
 class TestCreateCommand(unittest.TestCase):
     def setUp(self):
         self.console = HBNBCommand()
@@ -35,6 +36,7 @@ class TestCreateCommand(unittest.TestCase):
             self.console.onecmd("create Place invalid_param=invalid_value")
             output = fake_out.getvalue().strip()
             self.assertFalse(output)
+
 
 if __name__ == '__main__':
     unittest.main()

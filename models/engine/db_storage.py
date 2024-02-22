@@ -2,7 +2,8 @@
 """ new class for sqlAlchemy """
 from os import getenv
 from sqlalchemy.orm import sessionmaker, scoped_session
-from sqlalchemy import create_engine
+from sqlalchemy import (create_engine)
+from sqlalchemy.ext.declarative import declarative_base
 from models.base_model import Base
 from models.state import State
 from models.city import City
@@ -45,13 +46,13 @@ class DBStorage:
                 key = "{}.{}".format(type(elem).__name__, elem.id)
                 dic[key] = elem
         else:
-            class_list = [State, City, User, Place, Review, Amenity]
-            for clase in class_list:
+            lista = [State, City, User, Place, Review, Amenity]
+            for clase in lista:
                 query = self.__session.query(clase)
                 for elem in query:
                     key = "{}.{}".format(type(elem).__name__, elem.id)
                     dic[key] = elem
-        return dic
+        return (dic)
 
     def new(self, obj):
         """add a new element in the table
@@ -67,7 +68,7 @@ class DBStorage:
         """delete an element in the table
         """
         if obj:
-            self.__session.delete(obj)
+            self.session.delete(obj)
 
     def reload(self):
         """configuration
