@@ -6,7 +6,7 @@ from datetime import datetime
 
 def do_pack():
     """ Function to compress site files """
-    
+
     try:
         # Create versions folder if it doesn't exist
         local("mkdir -p versions")
@@ -26,3 +26,4 @@ def do_pack():
         # Print error message if any exception occurs
         print("Error:", e)
         return None
+
