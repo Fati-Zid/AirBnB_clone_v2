@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Script to prepare my server environement
 
 # Install Nginx if not already installed
 if ! command -v nginx &> /dev/null
