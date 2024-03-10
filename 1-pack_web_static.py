@@ -1,7 +1,12 @@
+#!/usr/bin/python3
+""" Script to compress site files """
+
 from fabric.api import local
 from datetime import datetime
 
 def do_pack():
+    """ Function to compress site files """
+    
     try:
         # Create versions folder if it doesn't exist
         local("mkdir -p versions")
